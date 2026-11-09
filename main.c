@@ -1,6 +1,7 @@
 #include "checks.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     const char *results[] = {"PASS", "pass", "Hold", "Pass"};
@@ -11,5 +12,8 @@ int main(void) {
     }
     printf("Latest check: %s\n", results[count - 1]);
     print_report(&summary);
-    return 0;
+    if (launch_ready(&summary)) {
+        return EXIT_SUCCESS;
+    }
+    return EXIT_FAILURE;
 }
