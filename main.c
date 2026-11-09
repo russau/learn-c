@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     if (argc >= 2) {
         input = fopen(argv[1], "r");
         if (input == NULL) {
-            fprintf(stderr, "Could not open input\n");
+            perror(argv[1]);
             return EXIT_FAILURE;
         }
     }
@@ -35,11 +35,11 @@ int main(int argc, char *argv[]) {
         strcpy(latest, line);
     }
     if (ferror(input)) {
-        fprintf(stderr, "Could not read input\n");
+        perror("Reading input");
         failed = true;
     }
     if (input != stdin && fclose(input) == EOF) {
-        fprintf(stderr, "Could not close input\n");
+        perror("Closing input");
         failed = true;
     }
     if (failed) {
@@ -49,16 +49,16 @@ int main(int argc, char *argv[]) {
     if (argc >= 3) {
         output = fopen(argv[2], "w");
         if (output == NULL) {
-            fprintf(stderr, "Could not open output\n");
+            perror(argv[2]);
             return EXIT_FAILURE;
         }
     }
     if (!print_report(&summary, latest, output)) {
-        fprintf(stderr, "Could not write report\n");
+        perror("Writing report");
         failed = true;
     }
     if (output != stdout && fclose(output) == EOF) {
-        fprintf(stderr, "Could not close output\n");
+        perror("Closing output");
         failed = true;
     }
     if (failed) {
