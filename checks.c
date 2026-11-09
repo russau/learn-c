@@ -1,12 +1,22 @@
 #include "checks.h"
 
+#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 
 bool add_check(CheckSummary *summary, const char *result) {
-    if (strcmp(result, "PASS") == 0) {
+    if (strlen(result) != 4) {
+        return false;
+    }
+    char normalized[5];
+    for (size_t i = 0; i < 4; i++) {
+        normalized[i] = (char)toupper((unsigned char)result[i]);
+    }
+    normalized[4] = '\0';
+
+    if (strcmp(normalized, "PASS") == 0) {
         summary->passed++;
-    } else if (strcmp(result, "HOLD") == 0) {
+    } else if (strcmp(normalized, "HOLD") == 0) {
         summary->held++;
     } else {
         return false;

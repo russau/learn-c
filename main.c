@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 int main(void) {
-    const char *results[] = {"PASS", "PASS", "HOLD", "PASS"};
+    const char *results[] = {"PASS", "pass", "Hold", "Pass"};
     size_t count = sizeof(results) / sizeof(results[0]);
     CheckSummary summary = {0};
     for (size_t i = 0; i < count; i++) {
