@@ -1,6 +1,6 @@
 #include "checks.h"
 
-#include <stddef.h>
+#include <stdio.h>
 
 int main(void) {
     const char *results[] = {"PASS", "PASS", "HOLD", "PASS"};
@@ -9,6 +9,7 @@ int main(void) {
     for (size_t i = 0; i < count; i++) {
         add_check(&summary, results[i]);
     }
+    printf("Latest check: %s\n", results[count - 1]);
     print_report(&summary);
     return 0;
 }
