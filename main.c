@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc == 2 && strcmp(argv[1], "-h") == 0) {
-        printf("Usage: preflight [INPUT]\n");
+        printf("Usage: preflight [INPUT [OUTPUT]]\n");
         return EXIT_SUCCESS;
     }
     FILE *input = stdin;
@@ -45,8 +45,25 @@ int main(int argc, char *argv[]) {
     if (failed) {
         return EXIT_FAILURE;
     }
-    printf("Latest check: %s\n", latest);
-    print_report(&summary);
+    FILE *output = stdout;
+    if (argc >= 3) {
+        output = fopen(argv[2], "w");
+        if (output == NULL) {
+            fprintf(stderr, "Could not open output\n");
+            return EXIT_FAILURE;
+        }
+    }
+    if (!print_report(&summary, latest, output)) {
+        fprintf(stderr, "Could not write report\n");
+        failed = true;
+    }
+    if (output != stdout && fclose(output) == EOF) {
+        fprintf(stderr, "Could not close output\n");
+        failed = true;
+    }
+    if (failed) {
+        return EXIT_FAILURE;
+    }
     if (launch_ready(&summary)) {
         return EXIT_SUCCESS;
     }

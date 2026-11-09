@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdio.h>
+
 typedef struct {
     int passed;
     int held;
@@ -7,4 +9,4 @@ typedef struct {
 
 bool add_check(CheckSummary *summary, const char *result);
 bool launch_ready(const CheckSummary *summary);
-void print_report(const CheckSummary *summary);
+bool print_report(const CheckSummary *summary, const char *latest, FILE *output);

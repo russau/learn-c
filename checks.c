@@ -28,12 +28,13 @@ bool launch_ready(const CheckSummary *summary) {
     return summary->passed > 0 && summary->held == 0;
 }
 
-void print_report(const CheckSummary *summary) {
+bool print_report(const CheckSummary *summary, const char *latest, FILE *output) {
     const char *status = "HOLD";
     if (launch_ready(summary)) {
         status = "GO";
     }
     int count = summary->passed + summary->held;
-    printf("Checks: %d\nPassed: %d\nHeld: %d\nLaunch: %s\n", count, summary->passed,
-           summary->held, status);
+    return fprintf(output, "Latest check: %s\nChecks: %d\nPassed: %d\nHeld: %d\nLaunch: %s\n",
+                   latest, count, summary->passed, summary->held,
+                   status) >= 0;
 }
